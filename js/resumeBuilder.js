@@ -6,12 +6,7 @@ var skills = ['<img src="images/CSharp.png" title="C# .NET" height="60px" width=
 			  '<img src="images/angularjs.png" title="AngularJS" height="60px" width="60px">', 
 			  '<img src="images/mongodb.png" title="MondoDB" height="60px" width="50px">', 
 			  '<img src="images/sklearn.png" title="SciKit-Learn Python" height="60px" width="70px">'];
-var message = "I am a last term student of Telecommunications Engineering at the Federal Institute for Education, Science \
-			   and Technology of Ceará. I have also studied Electronics and Software Engineering at the University of Glasgow \
-			   for one year as a visiting student. My research focuses in machine learning and data science within the fields \
-			   of information theory and economics. I have worked as a network administrator and as a junior developer. \
-			   I currently act as student researcher and a freelance programmer focused mainly in web and mobile \
-			   development.";
+var message = "I hold a degree in telecommunications engineering from the Federal Institute of Education, Science and Technology of Ceará (IFCE) and I am currently a master's degree student in Computer Science at the University of Paris Saclay following the track Data & Knowledge focused in Data Science skills such as Machine Learning, Data Mining, Data Warehousing, Big Data Processing, Web Data Models, Semantic Web, Distributed Databases, and Information Integration adnd Extraction.";
 
 
 var bio = {
@@ -19,12 +14,12 @@ var bio = {
 	"pic" : "images/eu-amazon.jpg",
 	"role" : "Data Scientist and Web Developer",
 	"contacts" : {
-		"mobile" : "+55-85-99996-8564",
-		"email" : "magister.anderson@gmail.com",
-		"github" : "andersonchaves",
+		"mobile" : "+33 6 51 32 21 22",
+		"email" : "andersonpachaves@gmail.com",
+		"github" : "apachaves",
 		"linkedin": "apachaves",
 		"twitter": "@apachaves",
-		"location" : "Fortaleza"
+		"location" : "Paris"
 	},
 	"skills" : skills,
 	"welcomeMessage" : message
