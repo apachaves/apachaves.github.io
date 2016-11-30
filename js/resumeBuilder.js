@@ -18,7 +18,8 @@ var bio = {
 		"email" : "andersonpachaves@gmail.com",
 		"github" : "apachaves",
 		"linkedin": "apachaves",
-		"twitter": "@apachaves"
+		"twitter": "@apachaves",
+		"location": "Paris"
 	},
 	"skills" : skills,
 	"welcomeMessage" : message
