@@ -6,7 +6,7 @@ var skills = ['<img src="images/CSharp.png" title="C# .NET" height="60px" width=
 			  '<img src="images/angularjs.png" title="AngularJS" height="60px" width="60px">', 
 			  '<img src="images/mongodb.png" title="MondoDB" height="60px" width="50px">', 
 			  '<img src="images/sklearn.png" title="SciKit-Learn Python" height="60px" width="70px">'];
-var message = "I hold a degree in telecommunications engineering from the Federal Institute of Education, Science and Technology of Ceará (IFCE) and I am currently a master's degree student in Computer Science at the University of Paris Saclay following the track Data & Knowledge focused in Data Science skills such as Machine Learning, Data Mining, Data Warehousing, Big Data Processing, Web Data Models, Semantic Web, Distributed Databases, and Information Integration adnd Extraction.";
+var message = "I hold a degree in Telecommunications Engineering from the Federal Institute of Education, Science and Technology of Ceará (IFCE) and I am currently a master's degree student in Computer Science at the University of Paris Saclay (UPSaclay) following the track Data & Knowledge focused in data science skills such as Machine Learning, Data Mining, Data Warehousing, Big Data Processing, Web Data Models, Semantic Web, Distributed Databases, and Information Integration and Extraction.";
 
 
 var bio = {
@@ -18,8 +18,7 @@ var bio = {
 		"email" : "andersonpachaves@gmail.com",
 		"github" : "apachaves",
 		"linkedin": "apachaves",
-		"twitter": "@apachaves",
-		"location" : "Paris"
+		"twitter": "@apachaves"
 	},
 	"skills" : skills,
 	"welcomeMessage" : message
