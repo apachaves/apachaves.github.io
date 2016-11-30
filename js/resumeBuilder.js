@@ -16,7 +16,7 @@ var message = "I am a last term student of Telecommunications Engineering at the
 
 var bio = {
 	"name" : "Anderson Chaves",
-	"pic" : "images/eu_avatar.jpg",
+	"pic" : "images/eu-amazon.jpg",
 	"role" : "Data Scientist and Web Developer",
 	"contacts" : {
 		"mobile" : "+55-85-99996-8564",
