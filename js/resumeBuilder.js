@@ -55,14 +55,29 @@ var work = {
 var education = {
 	schools : [
 		{
+			"name": "Université Paris-Saclay",
+			"location": "Plateau de Saclay, Orsay, Île-de-France, France",
+			"degree": "Master's Degree",
+			"major": "Computer Science (Data & Knowledge)",
+			"date": "2016",
+			"url": "https://www.universite-paris-saclay.fr"
+		},		
+		{
+			"name": "Télécom ParisTech",
+			"location": "46 Rue Barrault, 75013, Paris, France",
+			"degree": "Master's Degree",
+			"major": "Computer Science (Data & Knowledge)",
+			"date": "2016",
+			"url": "www.telecom-paristech.fr/"
+		},
+		{
 			"name": "University of Glasgow",
-			"location": "Glasgow, G12 8QQ, Scotland, United Kingdon",
+			"location": "Glasgow, G12 8QQ, Scotland, United Kingdom",
 			"degree": "BEng",
 			"major": "Electronics and Software Engineering",
 			"date": "2014",
 			"url": "http://www.gla.ac.uk/"
 		},
-
 		{
 			"name": "Federal Institute for Education, Science and Technology of Ceará",
 			"location": "Avenida Treze de Maio, 2081 - Benfica, Fortaleza - CE, 60040-531",
@@ -73,25 +88,25 @@ var education = {
 		}
 	],
 	onlineCourses : [
-		{
+		/*{
 			"title": "Introduction to Machine Learning",
 			"school": "Udacity",
 			"date": "November 2015",
 			"url": "https://www.udacity.com"
-		}
+		}*/
 	]
 };
 
 var projects = {
 	articles: [
-		{
+		/*{
 			"title": "Criptografia com bloco de correção de erros aplicados à evolução de autômatos",
 			"author": "Anderson P. A. Chaves, Allex S. Albuquerque, Bruno Sokal, Francisco J. A. Aquino",
 			"publisher": "Info Brasil",
 			"date": "2013",
 			"url": "http://www.infobrasil.inf.br/userfiles/OK-Criptografia-122414.pdf",
 			"pic": "images/sklearn.png"
-		}
+		}*/
 	],
 	softwares: [
 		{
@@ -211,5 +226,3 @@ displayWork();
 displayArticles();
 displaySchools();
 displayOnlineCourses();
-
-$("#mapDiv").append(googleMap);
