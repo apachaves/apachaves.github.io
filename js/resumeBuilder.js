@@ -1,11 +1,11 @@
-var skills = ['<img src="images/Hadoop.png" title="Hadoop" height="60px" width="60px">',
-			  '<img src="images/spark.png" title="Spark" height="60px" width="60px">',
-			  '<img src="images/flink.png" title="Flink" height="60px" width="60px">',
-			  '<img src="images/python.png" title="Python" height="60px" width="60px">', 
-			  '<img src="images/scala.png" title="Scala" height="60px" width="60px">', 
-			  '<img src="images/java.png" title="Java" height="60px" width="60px">', 
-			  '<img src="images/mongodb.png" title="MondoDB" height="60px" width="50px">', 
-			  '<img src="images/sklearn.png" title="SciKit-Learn" height="60px" width="70px">'];
+var skills = ['<img src="images/Hadoop.png" title="Hadoop" height="60px" width="80px">',
+			  '<img src="images/spark.png" title="Spark" height="60px" width="80px">',
+			  '<img src="images/flink.png" title="Flink" height="60px" width="80px">',
+			  '<img src="images/python.png" title="Python" height="60px" width="80px">', 
+			  '<img src="images/scala.png" title="Scala" height="60px" width="80px">', 
+			  '<img src="images/java.png" title="Java" height="60px" width="80px">', 
+			  '<img src="images/mongodb.png" title="MondoDB" height="60px" width="60px">', 
+			  '<img src="images/sklearn.png" title="SciKit-Learn" height="60px" width="80px">'];
 var message = "I hold a degree in Telecommunications Engineering from the Federal Institute of Education, Science and Technology of Ceará (IFCE) and I am currently a master's degree student in Computer Science at the University of Paris Saclay (UPSaclay) following the track Data & Knowledge focused in data science skills such as Machine Learning, Data Mining, Data Warehousing, Big Data Processing, Web Data Models, Semantic Web, Distributed Databases, and Information Integration and Extraction.";
 
 
