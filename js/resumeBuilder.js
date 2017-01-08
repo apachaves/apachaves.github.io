@@ -15,14 +15,13 @@ var message = "I hold a degree in Telecommunications Engineering from the Federa
 var bio = {
 	"name" : "Anderson Chaves",
 	"pic" : "images/eu-amazon.jpg",
-	"role" : "Data Scientist and Web Developer",
+	"role" : "Data Scientist",
 	"contacts" : {
 		"mobile" : "+33 6 51 32 21 22",
 		"email" : "andersonpachaves@gmail.com",
 		"github" : "apachaves",
 		"linkedin": "apachaves",
-		"twitter": "@apachaves",
-		"location": "Paris"
+		"twitter": "@apachaves"
 	},
 	"skills" : skills,
 	"welcomeMessage" : message
@@ -122,10 +121,6 @@ $("#topContacts").append(formattedGithub);
 
 var formattedLinkedin = HTMLcontactGeneric.replace("%data%", bio.contacts.linkedin).replace("%contact%", "linkedin");
 $("#topContacts").append(formattedLinkedin);
-
-var formattedLocation = HTMLlocation.replace("%data%", bio.contacts.location);
-formattedLocation = formattedLocation.replace("%contact%", "Linkedin");
-$("#topContacts").append(formattedLocation);
 
 var formattedPic = HTMLbioPic.replace("%data%", bio.pic);
 $("#header").append(formattedPic);
