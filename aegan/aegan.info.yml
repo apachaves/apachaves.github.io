@@ -1,0 +1,43 @@
+name: 'Aegan'
+type: theme
+description: 'Aegan is a Responsive Drupal 8 business theme, Developed by <a href="http://dropthemes.in">Dropthemes.in</a>.'
+base theme: classy
+# core: 8.x
+libraries:
+  - aegan/aegan-bootstrap
+  - aegan/global-css
+
+# Regions
+regions:
+  header: Header
+  header_right: Header Right
+  primary_menu: Primary Menu
+  breadcrumb: Breadcrumb
+  content_top: Content Top
+  sidebar_first: First Sidebar
+  content: Content
+  sidebar_second: Second Sidebar
+  content_bottom: Content Bottom
+  footer_first: Footer First
+  footer_second: Footer Second
+  footer_third: Footer Third
+  footer_fourth: Footer Fourth
+  footer: Footer
+
+# Features
+features:
+  - 'logo'
+  - 'name'
+  - 'slogan'
+  - 'node_user_picture'
+  - 'comment_user_picture'
+  - 'comment_user_verification'
+  - 'favicon'
+  - 'main_menu'
+  - 'secondary_menu'
+
+# Information added by Drupal.org packaging script on 2016-09-12
+version: '8.x-1.0'
+core: '8.x'
+project: 'aegan'
+datestamp: 1473665357

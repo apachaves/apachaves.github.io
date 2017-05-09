@@ -1,0 +1,276 @@
+<?php
+/**
+ * @file
+ * Functions to support theming in the Aegan theme.
+ */
+define('THEME_PATH', base_path() . drupal_get_path('theme', 'aegan'));
+
+use Drupal\Component\Utility\SafeMarkup;
+use Drupal\Component\Utility\Xss;
+use Drupal\Core\Template\Attribute;
+use Drupal\file\Plugin\Core\Entity\FileInterface;
+use Drupal\Component\Utility\Unicode;
+use Drupal\Core\Path\AliasManager;
+use Drupal\image\Entity\ImageStyle;
+
+/**
+ * Override or insert variables into the page template.
+ */
+function aegan_preprocess_page(&$vars) {
+  $color = theme_get_setting('aegan_color', 'aegan');
+  $vars['#attached']['library'][] = "aegan/color-{$color}";
+  $vars['#attached']['drupalSettings']['aegan']['flexslider']['animation'] = theme_get_setting('slideshow_animation', 'aegan');
+  $vars['#attached']['drupalSettings']['aegan']['flexslider']['slide_speed'] = theme_get_setting('slideshow_slide_speed', 'aegan');
+  $vars['#attached']['drupalSettings']['aegan']['flexslider']['animation_speed'] = theme_get_setting('slideshow_animation_speed', 'aegan');
+
+  // Add information about the number of sidebars.
+  if (!empty($vars['page']['sidebar_first']) && !empty($vars['page']['sidebar_second'])) {
+    $vars['contentlayout'] = 'col-md-6 col-sm-6';
+    $vars['sidebarfirst'] = 'col-md-3 col-sm-3';
+    $vars['sidebarsecond'] = 'col-md-3 col-sm-3';
+  }
+
+  elseif (!empty($vars['page']['sidebar_first'])) {
+    $vars['contentlayout'] = 'col-md-9 col-sm-9 ';
+    $vars['sidebarfirst'] = 'col-md-3 col-sm-3';
+  }
+
+  elseif (!empty($vars['page']['sidebar_second'])) {
+    $vars['contentlayout'] = 'col-md-9 sol-sm-9 ';
+    $vars['sidebarsecond'] = 'col-md-3 col-sm-3';
+  }
+
+  else {
+    $vars['contentlayout'] = 'col-lg-12 centered ';
+  }
+  $show_slideshow = theme_get_setting('slideshow_display', 'aegan');
+  $current_path = \Drupal::service('path.current')->getPath();
+  $path_alias = Unicode::strtolower(\Drupal::service('path.alias_manager')->getAliasByPath($current_path));
+  if (theme_get_setting('slideshow_visiblity', 'aegan')) {
+    $visiblity = \Drupal::service('path.matcher')->matchPath($path_alias, theme_get_setting('slideshow_visiblity', 'aegan'));
+  }
+  $slideshow_path = isset($visiblity) ? $visiblity : $vars['is_front'];
+  if ($slideshow_path && $show_slideshow) {
+    $vars['slider'] = array();
+    for ($i = 1; $i <= theme_get_setting('slideshow_count', 'aegan'); $i++) {
+      $fid = theme_get_setting("slide_image_{$i}", "aegan");
+      if (!empty($fid)) {
+        $file = \Drupal\file\Entity\File::load($fid[0]);
+        $uri = $file->getFileUri();
+        $image_style = theme_get_setting('slideshow_style', 'aegan');
+        if (!empty($image_style)) {
+          $image_path = ImageStyle::load($image_style)->buildUrl($uri);
+        }
+        else {
+          $image_path = file_create_url($uri);
+        }
+      }
+      else {
+        $image_path = THEME_PATH . "/images/slide-{$i}.jpg";
+      }
+      $vars['slider'][] = array(
+        'name' => !empty($fid) ? $file->getFilename() : "slider-{$i}",
+        'url' => theme_get_setting("slide_url_{$i}", "aegan"),
+        'src' => $image_path,
+        'description' => theme_get_setting("slide_description_{$i}", "aegan"),
+      );
+    }
+  }
+
+  $vars['socialicons'] = _aegan_get_socialicons();
+}
+
+/**
+ * Custom function to genetate social icons links.
+ */
+function _aegan_get_socialicons() {
+  $content = '<div class="follow-section"><div class="social"><ul>';
+  for ($i = 1; $i <= theme_get_setting('socialicon_count', 'aegan'); $i++) {
+    if (!empty(theme_get_setting("social_class_{$i}"))) {
+      $content .= '<li><a href="' . theme_get_setting("social_url_{$i}") . '" target="_blank"><i class="fa ' . theme_get_setting("social_class_{$i}") . '"></i></a></li>';
+    }
+  }
+  $content .= '</ul></div></div>';
+  return $content;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * @param $form
+ *   The form.
+ * @param $form_state
+ *   The form state.
+ */
+function aegan_form_system_theme_settings_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state) {
+
+  $form['aegan_settings'] = array(
+    '#type' => 'details',
+    '#title' => t('aegan Settings'),
+    '#collapsible' => FALSE,
+    '#collapsed' => FALSE,
+  );
+  $form['aegan_settings']['color'] = array(
+    '#type' => 'details',
+    '#title' => t('Color Switcher'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+  $form['aegan_settings']['color']['aegan_color'] = array(
+    '#type' => 'select',
+    '#title' => t('Colors'),
+    '#default_value' => theme_get_setting('aegan_color', 'aegan'),
+    '#description'   => t("Choose any one color from the list"),
+    '#options' => array(
+      'default' => t('DEFAULT'),
+      'red' => t('RED'),
+      'green' => t('GREEN'),
+      'blue' => t('BLUE'),
+      'yellow' => t('YELLOW'),
+      'orange' => t('ORANGE'),
+      'violet' => t('VIOLET'),
+      'pink' => t('PINK'),
+    ),
+  );
+  // Social icon configutation fieldset
+  $form['aegan_settings']['socialicon'] = array(
+    '#type' => 'details',
+    //~ '#tree' => TRUE,
+    '#title' => t('Social icons configuration'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+  $form['aegan_settings']['socialicon']['socialicon_count'] = array(
+    '#type' => 'select',
+    '#title' => t('Social Icon Count'),
+    '#default_value' => theme_get_setting('socialicon_count', 'aegan'),
+    '#options' => array(5 => 5, 10 => 10, 15 => 15),
+    '#description'   => t("Mention total number of slides in the slideshow."),
+  );
+  for ($i = 1; $i <= theme_get_setting('socialicon_count', 'aegan'); $i++) {
+    $form['aegan_settings']['socialicon'][$i] = array(
+      '#type' => 'fieldset',
+      //~ '#tree' => TRUE,
+      '#title' => t("Social icon - {$i}"),
+      '#collapsible' => TRUE,
+      '#collapsed' => FALSE,
+    );
+
+    $form['aegan_settings']['socialicon'][$i]["social_class_{$i}"] = array(
+      '#type' => 'textfield',
+      '#title' => t('Class'),
+      '#description' => t('Enter <a href="https://fortawesome.github.io/Font-Awesome/icons/#brand" target="_blank">font awesome social icon</a> class. for example "fa-facebook" for facebook'),
+      '#default_value' => theme_get_setting("social_class_{$i}"),
+    );
+    $form['aegan_settings']['socialicon'][$i]["social_url_{$i}"] = array(
+      '#type' => 'textfield',
+      '#title' => t('Url'),
+      '#description' => t("Enter your's social sites profile url."),
+      '#default_value' => theme_get_setting("social_url_{$i}"),
+    );
+  }
+  $form['aegan_settings']['slideshow'] = array(
+    '#type' => 'details',
+    '#title' => t('Front Page Slideshow'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+  $form['aegan_settings']['slideshow']['slideshow_count'] = array(
+    '#type' => 'select',
+    '#title' => t('SlideShow Count'),
+    '#default_value' => theme_get_setting('slideshow_count', 'aegan'),
+    '#options' => array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10),
+    '#description'   => t("Mention total number of slides in the slideshow."),
+  );
+  $form['aegan_settings']['slideshow']['slideshow_animation'] = array(
+    '#type' => 'select',
+    '#title' => t('Animation'),
+    '#default_value' => theme_get_setting('slideshow_animation', 'aegan'),
+    '#options' => array('fade' => 'FADE', 'slide' => 'SLIDE'),
+    '#description'   => t('Controls the animation type, "fade" or "slide".'),
+  );
+  $form['aegan_settings']['slideshow']['slideshow_slide_speed'] = array(
+    '#type' => 'textfield',
+    '#title' => t('SlideShow Speed'),
+    '#default_value' => theme_get_setting('slideshow_slide_speed', 'aegan'),
+    '#description'   => t("Number Set the speed of the slideshow cycling, in milliseconds. default : 7000"),
+  );
+  $form['aegan_settings']['slideshow']['slideshow_animation_speed'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Animation Speed'),
+    '#default_value' => theme_get_setting('slideshow_animation_speed', 'aegan'),
+    '#description'   => t("Number Set the speed of animations, in milliseconds. default : 600"),
+  );
+  $form['aegan_settings']['slideshow']['slideshow_display'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show slideshow'),
+    '#default_value' => theme_get_setting('slideshow_display', 'aegan'),
+    '#description'   => t("Check this option to show Slideshow in front page. Uncheck to hide."),
+  );
+  $form['aegan_settings']['slideshow']['slideshow_style'] = array(
+    '#type' => 'select',
+    '#title' => t('Image Style'),
+    '#default_value' => theme_get_setting('slideshow_style', 'aegan'),
+    '#options' => image_style_options(),
+    '#description'   => t('Select image style to to resize the images.'),
+  );
+  $form['aegan_settings']['slideshow']['slide'] = array(
+    '#markup' => t('You can change the title, url and image of each slide in the following Slide Setting fieldsets.'),
+  );
+
+  for ($i = 1; $i <= theme_get_setting('slideshow_count', 'aegan'); $i++) {
+    $form['aegan_settings']['slideshow']["slide{$i}"] = array(
+      '#type' => 'details',
+      '#title' => t("Slide {$i}"),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+    );
+    $form['aegan_settings']['slideshow']["slide{$i}"]["slide_description_{$i}"] = array(
+      '#type' => 'textarea',
+      '#title' => t('Slide '.$i.' Title'),
+      '#default_value' => theme_get_setting("slide_description_{$i}", "aegan"),
+    );
+    $form['aegan_settings']['slideshow']["slide{$i}"]["slide_image_{$i}"] = array(
+      '#type' => 'managed_file',
+      '#title' => t('Slide '.$i.' Image'),
+      '#description' => t('Use same size for all the slideshow images(Recommented size : 930 x 320).'),
+      '#default_value' => theme_get_setting("slide_image_{$i}", "aegan"),
+      '#upload_location' => 'public://',
+    );
+    $form['aegan_settings']['slideshow']["slide{$i}"]["slide_url_{$i}"] = array(
+      '#type' => 'textfield',
+      '#title' => t('Slide '.$i.' URL'),
+      '#default_value' => theme_get_setting("slide_url_{$i}", "aegan"),
+    );
+  }
+  $form['aegan_settings']['slideshow']['slideshow_visiblity'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Visibility'),
+    '#default_value' => theme_get_setting('slideshow_visiblity', 'aegan'),
+    '#description'   => t("Specify pages by using their paths. Enter one path per line. The '*' character is a wildcard. Example paths are /user for the current user's page and /user/* for every user page. front is the front page."),
+  );
+  $filename = drupal_get_path('theme', 'aegan') . '/aegan.theme';
+  $form_state->addBuildInfo('files', array($filename));
+  // Custom submit to save the file permenant.
+  $form['#submit'][] = 'aegan_settings_form_submit';
+}
+
+/**
+ * Custom submit handler for integrity settings form.
+ */
+function aegan_settings_form_submit(&$form, \Drupal\Core\Form\FormStateInterface $form_state) {
+  $account = \Drupal::currentUser();
+  $values = $form_state->getValues();
+  for ($i = 0; $i <= theme_get_setting('slideshow_count', 'aegan'); $i++) {
+    if (isset($values["slide_image_{$i}"]) && !empty($values["slide_image_{$i}"])) {
+      // Load the file via file.fid.
+      if ($file = \Drupal\file\Entity\File::load($values["slide_image_{$i}"][0])) {
+        // Change status to permanent.
+        $file->setPermanent();
+        $file->save();
+        $file_usage = \Drupal::service('file.usage');
+        $file_usage->add($file, 'user', 'user', $account->id());
+      }
+    }
+  }
+}
